@@ -1,23 +1,26 @@
 import pygame
 
-from setup import WINDOW_HEIGHT, FONT, WINDOW_LENGTH, TITLE_FONT
+from miscellaneous import Timer
 from planet_finder import PlanetFinder
+from setup import WINDOW_HEIGHT, FONT, TITLE_FONT
 from stage import Intro
 from starfinder import StarFinderLevel
-from miscellaneous import Timer
+from almanac import Almanac
 
 
 class StageManager:
     def __init__(self) -> None:
         self.stages = {
             'intro': Intro(self.change_stage),
-            'finder': StarFinderLevel(self.change_stage),
-            'planetfinder': PlanetFinder(self.change_stage)
+            'finder': StarFinderLevel(self.change_stage, None),
+            'planetfinder': PlanetFinder(self.change_stage),
+            'almanac': Almanac(self.change_stage),
         }
 
         self.cur_stage = 'intro'
         self.menu = Menu(self.change_stage, self.check_menu_active)
         self.menu_active = False
+        self.stages['finder'].tile_data = self.stages['planetfinder'].get_tile_data
 
         self.timer = Timer(300)
 
@@ -27,9 +30,10 @@ class StageManager:
         self.menu_active = state
         self.timer.activate(self.change_stage, *args)
 
-    def change_stage(self, next_state):
-        self.cur_stage = next_state
-        self.stages[self.cur_stage].refresh()
+    def change_stage(self, next_state=None):
+        if next_state:
+            self.cur_stage = next_state
+            self.stages[self.cur_stage].refresh()
 
     def play(self, dt):
         self.timer.update()
@@ -56,7 +60,7 @@ class Menu:
 
         self.back_icon = pygame.Surface((24, 24))
         self.back_icon.fill("white")
-        self.back_icon_rect = self.icon.get_rect(bottomright=(self.right_side - 20, WINDOW_HEIGHT - 20))
+        self.back_icon_rect = self.back_icon.get_rect(bottomright=(self.right_side - 20, WINDOW_HEIGHT - 20))
 
         self.surf.blit(self.back_icon, self.back_icon_rect)
 
@@ -68,7 +72,7 @@ class Menu:
         self.menu_data = {
             "Night Sky Viewer": "finder",
             "Exoplanet Finder": "planetfinder",
-            "Exoplanet Almanac": "blah",
+            "Exoplanet Almanac": "almanac",
             "Play a Mini Game": "blah",
         }
 

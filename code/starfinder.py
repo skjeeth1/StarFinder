@@ -5,6 +5,16 @@ from setup import *
 from stage import Stage
 
 
+class SpriteGroup(pygame.sprite.Group):
+    def draw(self, surface):
+        for sprite in self.sprites():
+            if hasattr(sprite, "lock"):
+                if not sprite.lock:
+                    surface.blit(sprite.image, sprite.rect)
+            else:
+                surface.blit(sprite.image, sprite.rect)
+
+
 class Entity(pygame.sprite.Sprite):
     def __init__(self, group, pos):
         super().__init__(group)
@@ -15,23 +25,26 @@ class Entity(pygame.sprite.Sprite):
 
 
 class Planet(Entity):
-    def __init__(self, group, pos, name, info_card):
+    def __init__(self, group, pos, name, lock, disc_data, info_card):
         super().__init__(group, pos)
         self.name = name
+        self.disc_data = disc_data
         self.info_card = info_card
+        self.lock = lock
 
     def check_collision(self):
         if self.rect.collidepoint(pygame.mouse.get_pos()) and pygame.mouse.get_pressed()[0]:
-            self.info_card(self.name)
+            self.info_card(self.name, self.disc_data)
 
     def update(self):
         self.check_collision()
 
 
 class StarFinderLevel(Stage):
-    def __init__(self, change_state) -> None:
+    def __init__(self, change_state, lock_data) -> None:
         super().__init__(change_state)
 
+        self.tile_data = lock_data
         self.background = pygame.image.load("assets/images/night_sky.jpg")
         self.back_rect = self.background.get_rect(top=0, left=0)
         self.dark_surf = pygame.Surface((WINDOW_LENGTH, WINDOW_HEIGHT), pygame.SRCALPHA)
@@ -40,7 +53,7 @@ class StarFinderLevel(Stage):
         self.active_area = pygame.Surface((WINDOW_LENGTH - 100, WINDOW_HEIGHT - 100))
         self.active_rect = self.active_area.get_rect(center=self.back_rect.center)
 
-        self.entities = pygame.sprite.Group()
+        self.entities = SpriteGroup()
         self.info_cards = {}
         self.create_entities()
         self.cur_entity = ''
@@ -58,15 +71,24 @@ class StarFinderLevel(Stage):
         if rect.collidepoint(mouse_pos):
             self.draw_lines(mouse_pos)
 
-    def invoke_info_card(self, name):
-        self.view = name
+    def invoke_info_card(self, name, planet_data):
+        tile_data = self.tile_data()
+
+        for tile in tile_data:
+            if tile.data == planet_data:
+                if tile.lock:
+                    pass
+                else:
+                    self.view = name
 
     def create_entities(self):
-        for (x, y), (name, desc) in PLANET_LOCATION.items():
-            Planet(self.entities, (x, y), name, self.invoke_info_card)
-            self.info_cards[name] = (InfoCard(None, None,
-                                              (FONT, 40, name, (100, 100)),
-                                              (FONT, 30, desc, (100, 250))))
+        for (x, y), (disc, name, *desc) in PLANET_DATA.items():
+            Planet(self.entities, (x, y), name, False, disc, self.invoke_info_card)
+
+            texts = [(FONT, 30, i, (100, ind * 75 + 250)) for ind, i in enumerate(desc)]
+            texts.append((FONT, 40, name, (100, 100)))
+
+            self.info_cards[name] = InfoCard(None, None, self.refresh, *texts)
 
     def refresh(self):
         self.view = "viewer"

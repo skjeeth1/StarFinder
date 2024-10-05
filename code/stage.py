@@ -2,7 +2,7 @@ from math import sin
 
 import pygame
 
-from miscellaneous import Button
+from miscellaneous import PlayButton
 from setup import *
 
 
@@ -42,7 +42,7 @@ class Intro(Stage):
         self.tel_img = pygame.image.load("assets/images/telescope.png")
         self.tel_rect = self.tel_img.get_rect(midleft=(100, WINDOW_HEIGHT // 2))
 
-        self.play_button = Button(TITLE_FONT, "PLAY", 25, (900, 450), "#EEEEEE", "#EEEEEE", self.quit_state, 'finder')
+        self.play_button = PlayButton(TITLE_FONT, "PLAY", 25, (900, 450), "#EEEEEE", "#EEEEEE", self.quit_state, 'finder')
 
         self.render_text()
 

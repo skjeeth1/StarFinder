@@ -32,7 +32,7 @@ class MainGame:
             surf = self.font.render(str(pygame.mouse.get_pos()), False, '#FFFFFF', "#000000")
             rect = surf.get_rect(topleft=(20, 20))
 
-            self.display.blit(surf, rect)
+            # self.display.blit(surf, rect)
             pygame.display.flip()
 
 
