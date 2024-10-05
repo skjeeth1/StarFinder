@@ -1,7 +1,8 @@
 import pygame
 
-from button import Button
+from miscellaneous import Button
 from setup import *
+from math import sin
 
 
 class Stage:
@@ -12,12 +13,15 @@ class Stage:
     def quit_state(self, next_state):
         self.change_state(next_state)
 
-    def play(self):
+    def refresh(self):
+        pass
+
+    def play(self, dt):
         self.display.fill("#FFFFFF")
 
 
 class Intro(Stage):
-    def __init__(self, change_state, font) -> None:
+    def __init__(self, change_state) -> None:
         super().__init__(change_state)
 
         self.texts = {
@@ -26,7 +30,7 @@ class Intro(Stage):
         }
 
         self.fonts = {
-            i[1]: pygame.font.Font(font, i[1]) for i in self.texts.values()
+            i[1]: pygame.font.Font(TITLE_FONT, i[1]) for i in self.texts.values()
         }
 
         self.rendered_text = []
@@ -37,9 +41,11 @@ class Intro(Stage):
         self.tel_img = pygame.image.load("assets/images/telescope.png")
         self.tel_rect = self.tel_img.get_rect(midleft=(100, WINDOW_HEIGHT // 2))
 
-        self.play_button = Button(font, "PLAY", 25, (900, 450), "#EEEEEE", "#EEEEEE", self.quit_state, 'finder')
+        self.play_button = Button(TITLE_FONT, "PLAY", 25, (900, 450), "#EEEEEE", "#EEEEEE", self.quit_state, 'finder')
 
         self.render_text()
+
+        self.start_time = pygame.time.get_ticks()
 
     def render_text(self):
         for ind, item in self.texts.items():
@@ -53,9 +59,11 @@ class Intro(Stage):
 
             self.rendered_text.append((surf, rect))
 
-    def play(self):
+
+    def play(self, dt):
+        # self.wobble(dt)
         self.display.blit(self.background, self.back_rect)
         self.display.blit(self.tel_img, self.tel_rect)
         self.play_button.draw()
         for surf, rect in self.rendered_text:
-            self.display.blit(surf, rect)
+            self.display.blit(surf, rect.topleft + pygame.Vector2(0, sin(pygame.time.get_ticks() / 200)) * 5)

@@ -26,6 +26,6 @@ class StarFinderLevel(Stage):
         if rect.collidepoint(mouse_pos):
             self.draw_lines(mouse_pos)
 
-    def play(self):
+    def play(self, dt):
         self.display.blit(self.background, self.back_rect)
         self.check_active(self.active_rect)

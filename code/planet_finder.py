@@ -1,14 +1,14 @@
 import pygame
 
 from stage import Stage
-from setup import WINDOW_HEIGHT, WINDOW_LENGTH, FONT
+from setup import WINDOW_HEIGHT, WINDOW_LENGTH, FONT, TITLE_FONT
 
 
 class PlanetFinder(Stage):
     def __init__(self, change_state):
         super().__init__(change_state)
         self.tiles = [
-            [i, WINDOW_HEIGHT // 2, True] for i in
+            [i, WINDOW_HEIGHT // 2 + 50, False] for i in
             range(WINDOW_LENGTH // 5 - 60, WINDOW_LENGTH, WINDOW_LENGTH // 5 + 40)
         ]
 
@@ -23,9 +23,13 @@ class PlanetFinder(Stage):
 
         self.create_rectangles()
 
+        self.title = pygame.font.Font(TITLE_FONT, 50).render("WAYS TO FIND AN EXOPLANET", False, "white")
+
         self.cur_view = 'viewer'
-        self.font_1 = pygame.font.Font(FONT, 38)
+        self.font_1 = pygame.font.Font(FONT, 45)
         self.font_2 = pygame.font.Font(FONT, 20)
+
+        self.helper_text = self.font_2.render("Unlock Methods by playing Mini Games", False, 'white')
 
         self.locked_surf = self.tiles[0][0].copy()
         surf_1 = self.font_2.render("Unlock this", False, "#EEEEEE")
@@ -53,7 +57,7 @@ class PlanetFinder(Stage):
 
     def create_rectangles(self):
         for ind, cord in enumerate(self.tiles):
-            surf = pygame.Surface((240, 500), pygame.SRCALPHA)
+            surf = pygame.Surface((240, 400), pygame.SRCALPHA)
             rect = surf.get_rect(center=cord[:2])
 
             self.tiles[ind] = (surf, rect, cord[2])
@@ -67,8 +71,8 @@ class PlanetFinder(Stage):
                         rect_2 = pygame.Rect(rect.left + 5, rect.top + 5, rect.width, rect.height)
                         pygame.draw.rect(self.display, "#99ccff", rect_2, 7)
 
-                if pygame.mouse.get_pressed()[0]:
-                    self.cur_view = ind
+                        if pygame.mouse.get_pressed()[0]:
+                            self.cur_view = ind
 
     def render_text(self):
         for ind, i in enumerate(self.data):
@@ -84,12 +88,17 @@ class PlanetFinder(Stage):
                     self.tiles[ind][0].blit(surf_1, rect_1)
                     self.tiles[ind][0].blit(surf_2, rect_2)
 
-    def play(self):
+    def refresh(self):
+        self.cur_view = "viewer"
+
+    def play(self, dt):
         self.display.blit(self.background, self.back_rect)
 
         self.on_hover()
 
         if self.cur_view == 'viewer':
+            self.display.blit(self.title, (100, 70))
+            self.display.blit(self.helper_text, (800, WINDOW_HEIGHT - 50))
             for surf, rect, lock in self.tiles:
                 if lock:
                     self.display.blit(self.locked_surf, rect.topleft)
