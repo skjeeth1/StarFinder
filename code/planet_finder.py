@@ -1,7 +1,7 @@
 import pygame
 
-from stage import Stage
 from setup import WINDOW_HEIGHT, WINDOW_LENGTH, FONT, TITLE_FONT
+from stage import Stage
 
 
 class PlanetFinder(Stage):

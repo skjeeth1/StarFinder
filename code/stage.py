@@ -1,8 +1,9 @@
+from math import sin
+
 import pygame
 
 from miscellaneous import Button
 from setup import *
-from math import sin
 
 
 class Stage:
@@ -58,7 +59,6 @@ class Intro(Stage):
             rect = surf.get_rect(center=item[2])
 
             self.rendered_text.append((surf, rect))
-
 
     def play(self, dt):
         # self.wobble(dt)
