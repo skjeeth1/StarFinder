@@ -1,8 +1,10 @@
-import pygame
 from sys import exit
+
+import pygame
 
 from setup import *
 from stage_manager import StageManager
+
 
 class MainGame:
     def __init__(self) -> None:
@@ -22,7 +24,7 @@ class MainGame:
                     pygame.quit()
                     exit()
             self.display.fill("#1E1E1E")
-            
+
             self.stage_manager.play()
             surf = self.font.render(str(pygame.mouse.get_pos()), False, '#FFFFFF', "#000000")
             rect = surf.get_rect(topleft=(20, 20))

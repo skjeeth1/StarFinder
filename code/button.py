@@ -1,5 +1,6 @@
 import pygame
 
+
 class Button:
     def __init__(self, font, text, font_size, pos, color, butt_color, click_func, *args) -> None:
         self.display = pygame.display.get_surface()
@@ -13,7 +14,7 @@ class Button:
 
         self.click_func = click_func
         self.func_args = args
-    
+
     def on_click(self):
         mouse_pos = pygame.mouse.get_pos()
         if self.active:
@@ -21,9 +22,7 @@ class Button:
                 self.active = False
                 self.click_func(*self.func_args)
 
-
     def draw(self):
         pygame.draw.rect(self.display, self.button_color, self.but_rect, border_radius=12, width=5)
         self.display.blit(self.surf, self.rect)
         self.on_click()
-
