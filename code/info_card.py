@@ -4,17 +4,17 @@ from setup import WINDOW_HEIGHT, WINDOW_LENGTH
 
 
 class InfoCard:
-    def __init__(self, img=None, pos=None, func=None, *args):
+    def __init__(self, img=None, pos=None, func=None, width=40, *args):
         self.display = pygame.display.get_surface()
         self.func = func
         self.data = args
+        self.width = width
 
         self.img = pygame.image.load(img) if img else None
         self.img = pygame.transform.scale(self.img, (400, 400)) if img else None
         self.img_rect = self.img.get_rect(center=pos) if img else None
 
-        self.back_icon = pygame.Surface((24, 24))
-        self.back_icon.fill("white")
+        self.back_icon = pygame.image.load("assets/images/back.png").convert_alpha()
         self.back_icon_rect = self.back_icon.get_rect(bottomright=(WINDOW_LENGTH - 40, WINDOW_HEIGHT - 40))
 
         self.rendered_texts = []
@@ -22,19 +22,21 @@ class InfoCard:
 
     def render_text(self):
         for font, size, data, pos in self.data:
-            data = data.split()
             spc_ind = [ind for ind, i in enumerate(data) if i == " "]
 
             split_ind = []
-            prev_ind = 0
+            prev_ind = -1
             for i in spc_ind:
-                if i - prev_ind >= 25:
-                    split_ind.append((prev_ind, i))
-                    prev_ind = 0
+                if i - prev_ind >= self.width:
+                    split_ind.append((prev_ind + 1, i))
+                    prev_ind = i
+            split_ind.append((prev_ind + 1, len(data)))
 
-            for i in range(0, len(data), 5):
-                surf = pygame.font.Font(font, size).render(" ".join(data[i:min(i + 5, len(data))]), False, "white")
-                rect = surf.get_rect(topleft=(pos[0], pos[1] + (i // 5 * 35)))
+            font_r = pygame.font.Font(font, size)
+
+            for ind, (st, ed) in enumerate(split_ind):
+                surf = font_r.render(data[st:ed], False, "white")
+                rect = surf.get_rect(topleft=(pos[0], pos[1] + (ind * 35)))
 
                 self.rendered_texts.append((surf, rect))
 

@@ -62,8 +62,8 @@ class Almanac(Stage):
         self.background.blit(surf, (0, 0), special_flags=pygame.BLEND_RGBA_SUB)
         self.back_rect = self.background.get_rect(top=0, left=0)
 
-        self.right_button = Button((1250, WINDOW_HEIGHT // 2 + 50), self.change_page, 1)
-        self.left_button = Button((30, WINDOW_HEIGHT // 2 + 50), self.change_page, 0)
+        self.right_button = Button("assets/images/next.png",(1250, WINDOW_HEIGHT // 2 + 50), self.change_page, 1)
+        self.left_button = Button("assets/images/previous.png", (30, WINDOW_HEIGHT // 2 + 50), self.change_page, 0)
 
     def create_tiles(self):
         for ind, (disc, name, *data) in enumerate(PLANET_DATA.values()):

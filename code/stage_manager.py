@@ -1,13 +1,11 @@
 import pygame
-from random import choice
 
-from setup import FINDER_DATA
+from almanac import Almanac
 from miscellaneous import Timer
 from planet_finder import PlanetFinder
 from setup import WINDOW_HEIGHT, FONT, TITLE_FONT
 from stage import Intro
 from starfinder import StarFinderLevel
-from almanac import Almanac
 
 
 class StageManager:
@@ -53,7 +51,6 @@ class StageManager:
             self.stages['planetfinder'].unlock_tiles()
             self.stages['finder'].clue_received(clue)
 
-
     def play(self, dt):
         self.timer.update()
         if not self.menu_active:
@@ -68,8 +65,7 @@ class Menu:
         self.menu_activate = menu_activate
         self.right_side = 285
 
-        self.icon = pygame.Surface((24, 24))
-        self.icon.fill("white")
+        self.icon = pygame.image.load("assets/images/menu-bar.png").convert_alpha()
         self.icon_rect = self.icon.get_rect(topleft=(20, 20))
         self.display = pygame.display.get_surface()
 
@@ -77,8 +73,7 @@ class Menu:
         self.surf.fill("#000016")
         self.rect = self.surf.get_rect(topleft=(0, 0))
 
-        self.back_icon = pygame.Surface((24, 24))
-        self.back_icon.fill("white")
+        self.back_icon = pygame.image.load("assets/images/back.png").convert_alpha()
         self.back_icon_rect = self.back_icon.get_rect(bottomright=(self.right_side - 20, WINDOW_HEIGHT - 20))
 
         self.surf.blit(self.back_icon, self.back_icon_rect)

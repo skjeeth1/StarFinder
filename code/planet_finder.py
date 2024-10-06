@@ -1,5 +1,6 @@
 import pygame
 
+from info_card import InfoCard
 from setup import *
 from stage import Stage
 
@@ -69,10 +70,9 @@ class PlanetFinder(Stage):
         self.locked_surf.blit(surf_1, rect_1)
         self.locked_surf.blit(surf_2, rect_2)
 
-        self.tiles = [
-            Tiles((240, 400), (i * (WINDOW_LENGTH // 5 + 40) + WINDOW_LENGTH // 5 - 60, WINDOW_HEIGHT // 2 + 50), True,
-                  list(self.data.keys())[i], self.font_1, self.font_2, self.locked_surf) for i in range(4)
-        ]
+        self.tiles = []
+        self.info_cards = {}
+        self.create_tiles()
 
         # self.tiles[0].lock = False
         # self.tiles[1].lock = False
@@ -81,6 +81,22 @@ class PlanetFinder(Stage):
 
         # self.latest_unlocked_tile = None
         # self.unlock_timer = Timer(4000)
+
+
+    def create_tiles(self):
+        for ind, i in enumerate(list(self.data.keys())):
+            self.tiles.append(
+                Tiles((240, 400), (ind * (WINDOW_LENGTH // 5 + 40) + WINDOW_LENGTH // 5 - 60, WINDOW_HEIGHT // 2 + 50),
+                      True, i, self.font_1, self.font_2, self.locked_surf)
+            )
+
+            texts = [
+                (FONT, 25, self.data[i][1], (100, 350)),
+                (FONT, 35, self.data[i][0], (100, 250)),
+                (FONT, 50, i, (100, 100))
+            ]
+
+            self.info_cards[i] = InfoCard(None, None, self.refresh, 75, *texts)
 
     def on_hover(self):
         if self.view == 'viewer':
@@ -92,7 +108,7 @@ class PlanetFinder(Stage):
                         pygame.draw.rect(self.display, "#99ccff", rect_2, 7)
 
                         if pygame.mouse.get_pressed()[0]:
-                            self.view = ind
+                            self.view = tile.name
 
     def get_tile_data(self):
         return self.tiles
@@ -115,4 +131,4 @@ class PlanetFinder(Stage):
             for tile in self.tiles:
                 tile.render_tile()
         else:
-            pass
+            self.info_cards[self.view].draw()

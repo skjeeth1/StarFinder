@@ -3,10 +3,14 @@ from math import sin
 import pygame
 
 class Button:
-    def __init__(self, pos, func, *args):
+    def __init__(self, img, pos, func, *args):
         self.display = pygame.display.get_surface()
-        self.image = pygame.Surface((20, 50))
-        self.image.fill("white")
+
+        if img:
+            self.image = pygame.image.load(img).convert_alpha()
+        else:
+            self.image = pygame.Surface((24, 24))
+            self.image.fill("white")
         self.rect = self.image.get_rect(center=pos)
         self.func = func
         self.func_args = args
@@ -34,7 +38,7 @@ class Button:
 
 class PlayButton(Button):
     def __init__(self, font, text, font_size, pos, color, butt_color, func, *args):
-        super().__init__(pos, func, args)
+        super().__init__(None, pos, func, args)
         self.display = pygame.display.get_surface()
 
         self.font = pygame.font.Font(font, font_size)

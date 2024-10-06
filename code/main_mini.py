@@ -231,38 +231,5 @@ class Game:
             self.aliens.draw(screen)
             self.alien_lasers.draw(screen)
 
-        if pygame.key.get_pressed()[pygame.K_k]:
-            self.aliens.empty()
-
-
-if __name__ == '__main__':
-
-    # Initialize pygame
-    pygame.init()
-    # screen_width = 1280
-    # screen_height = 640
-    screen = pygame.display.set_mode((WINDOW_LENGTH, WINDOW_HEIGHT))
-    clock = pygame.time.Clock()
-    game = Game()
-
-    # Title and icon
-    icon = pygame.image.load('../assets/images/icon.png').convert_alpha()
-    pygame.display.set_icon(icon)
-    pygame.display.set_caption("Space Invaders Minigame")
-
-    # Slowing down alien laser
-    alaser = pygame.USEREVENT + 1
-    pygame.time.set_timer(alaser, 800)
-
-    while True:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                sys.exit()
-            if event.type == alaser:
-                game.shoot()
-
-        screen.fill((30, 30, 30))
-        game.run(screen)
-        pygame.display.update()
-        clock.tick(60)
+        # if pygame.key.get_pressed()[pygame.K_k]:
+        #     self.aliens.empty()

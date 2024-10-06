@@ -17,17 +17,16 @@ class SpriteGroup(pygame.sprite.Group):
 
 
 class Entity(pygame.sprite.Sprite):
-    def __init__(self, group, pos):
+    def __init__(self, group, pos, img):
         super().__init__(group)
 
-        self.image = pygame.Surface((20, 20))
-        self.image.fill("white")
+        self.image = pygame.image.load(img).convert_alpha()
         self.rect = self.image.get_rect(center=pos)
 
 
 class Planet(Entity):
-    def __init__(self, group, pos, name, lock, disc_data, info_card):
-        super().__init__(group, pos)
+    def __init__(self, group, pos, name, lock, disc_data, info_card, img):
+        super().__init__(group, pos, img)
         self.name = name
         self.disc_data = disc_data
         self.info_card = info_card
@@ -120,14 +119,17 @@ class StarFinderLevel(Stage):
 
     def create_entities(self):
         for (x, y), (disc, name, *desc) in PLANET_DATA.items():
-            Planet(self.entities, (x, y), name, True, disc, self.invoke_info_card)
+            Planet(self.entities, (x, y), name, True, disc, self.invoke_info_card, f"assets/images/planet.png")
 
-            texts = [(FONT, 30, i, (100, ind * 75 + 250 )) for ind, i in enumerate(desc)]
-            texts.append((FONT, 40, name, (100, 100)))
+            texts = [
+                (FONT, 25, desc[0], (100, 250)),
+                (FONT, 20, desc[1], (100, 550)),
+                (FONT, 20, desc[2], (550, 550)),
+                (FONT, 20, desc[3], (1000, 550)),
+                (FONT, 50, name, (100, 100))
+            ]
 
-            texts = [(FONT, 25, desc[0], (100, 325))]
-
-            self.info_cards[name] = InfoCard(None, None, self.refresh, *texts)
+            self.info_cards[name] = InfoCard(None, None, self.refresh, 40, *texts)
 
     def refresh(self):
         self.view = "viewer"
