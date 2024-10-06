@@ -17,8 +17,7 @@ Graphics
 7. <a href="https://www.flaticon.com/free-icons/menu-bar" title="menu-bar icons">Menu-bar icons created by NajmunNahar - Flaticon</a>
 8. <a href="https://www.flaticon.com/free-icons/go" title="go icons">Go icons created by meaicon - Flaticon</a>
 9. <a href="https://www.flaticon.com/free-icons/left-arrow" title="left arrow icons">Left arrow icons created by Any Icon - Flaticon</a>
-10. <a href="https://www.flaticon.com/free-icons/planet" title="planet icons">Planet icons created by Freepik - Flaticon</a>
-11. <a href="https://www.flaticon.com/free-icons/planet" title="planet icons">Planet icons created by Freepik - Flaticon</a>
+10. <a href="https://www.flaticon.com/free-icons/eris" title="eris icons">Eris icons created by Chanut-is-Industries - Flaticon</a>
 
 Font
 1. Pixeled - <https://www.dafont.com/omegapc777.d6598>
