@@ -74,7 +74,7 @@ class PlanetFinder(Stage):
                   list(self.data.keys())[i], self.font_1, self.font_2, self.locked_surf) for i in range(4)
         ]
 
-        self.tiles[0].lock = False
+        # self.tiles[0].lock = False
         self.tiles[1].lock = False
 
         self.helper_text = self.font_2.render("Unlock Methods by playing Mini Games", False, 'white')

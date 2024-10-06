@@ -2,7 +2,6 @@ from math import sin
 
 import pygame
 
-
 class Button:
     def __init__(self, pos, func, *args):
         self.display = pygame.display.get_surface()
@@ -77,7 +76,7 @@ class Timer:
         self.start_time = 0
         if self.func:
             if self.args:
-                self.func(self.args[0])
+                self.func(*self.args)
                 self.args = None
             else:
                 self.func()
@@ -90,17 +89,46 @@ class Timer:
                 self.deactivate()
 
 
-class Text:
-    def __init__(self, text, font: pygame.Font, color, pos, animate=False):
+class AnimatedText:
+    def __init__(self, text, font: pygame.Font, color, pos, func):
         self.text = text
-        self.surface = font.render(text, False, color)
+        self.surface = font.render("", False, color)
         self.rect = self.surface.get_rect(topleft=pos)
+        self.font = font
+        self.color = color
+        self.func = func
 
-        self.animate = animate
+        self.animate = False
+        self.cur_index = 0
+        self.key_press = False
+        self.timer = Timer(25)
 
     def animate_text(self):
-        if self.animate:
-            pass
+        if self.animate and not self.key_press:
+            self.surface = self.font.render(self.text[:self.cur_index+1], False, self.color)
+            self.cur_index += 1
+
+            if self.cur_index >= len(self.text):
+                self.key_press = True
+            else:
+                self.animate = False
+                self.timer.activate(self.wait_animate_text)
+
+    def wait_animate_text(self):
+        self.animate = True
+
+    def wait_key_press(self):
+        if self.key_press and self.animate:
+            if pygame.key.get_pressed()[pygame.K_RETURN]:
+                self.key_press = False
+                self.animate = False
+                self.func()
+
+    def start_animation(self):
+        self.animate = True
 
     def render(self, surface):
+        self.timer.update()
+        self.animate_text()
+        self.wait_key_press()
         surface.blit(self.surface, self.rect)

@@ -20,17 +20,19 @@ class NewTiles(Tiles):
 
         for ind, i in enumerate(self.data[1:]):
             surf = self.font_2.render(i, False, "#EEEEEE")
-            rect = surf.get_rect(midleft=(50, ind*40+270))
+            rect = surf.get_rect(midleft=(50, ind * 40 + 270))
 
             self.surf.blit(surf, rect)
 
 
 class Almanac(Stage):
-    def __init__(self, change_state):
+    def __init__(self, change_state, get_unlocked_planet_data):
         super().__init__(change_state)
 
         self.font_1 = pygame.font.Font(FONT, 45)
         self.font_2 = pygame.font.Font(FONT, 20)
+        self.unlocked_planet_data = get_unlocked_planet_data
+        self.info_cards = None
 
         self.tile_size = (WINDOW_LENGTH // 2 - 100, 400)
 
@@ -52,7 +54,7 @@ class Almanac(Stage):
         self.create_tiles()
 
         self.view = 'viewer'
-        self.page = 1
+        self.page = 0
 
         self.background = pygame.image.load("assets/images/night_sky.jpg")
         surf = pygame.Surface((WINDOW_LENGTH, WINDOW_HEIGHT), pygame.SRCALPHA)
@@ -62,8 +64,6 @@ class Almanac(Stage):
 
         self.right_button = Button((1250, WINDOW_HEIGHT // 2 + 50), self.change_page, 1)
         self.left_button = Button((30, WINDOW_HEIGHT // 2 + 50), self.change_page, 0)
-
-
 
     def create_tiles(self):
         for ind, (disc, name, *data) in enumerate(PLANET_DATA.values()):
@@ -84,7 +84,7 @@ class Almanac(Stage):
                         pygame.draw.rect(self.display, "#99ccff", rect_2, 7)
 
                         if pygame.mouse.get_pressed()[0]:
-                            self.view = ind
+                            self.view = tile.name
 
     def get_tile_data(self):
         return self.tiles
@@ -106,6 +106,12 @@ class Almanac(Stage):
 
     def refresh(self):
         self.view = "viewer"
+        self.page = 0
+        data = self.unlocked_planet_data()
+
+        for tile in self.tiles:
+            if tile.lock and tile.name in data:
+                tile.lock = False
 
     def play(self, dt):
         self.display.blit(self.background, self.back_rect)
@@ -120,4 +126,4 @@ class Almanac(Stage):
             for tile in self.tiles[self.page * 2:(self.page + 1) * 2]:
                 tile.render_tile()
         else:
-            pass
+            self.info_cards[self.view].draw()

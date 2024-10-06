@@ -14,26 +14,29 @@ class StageManager:
             'intro': Intro(self.change_stage),
             'finder': StarFinderLevel(self.change_stage, None),
             'planetfinder': PlanetFinder(self.change_stage),
-            'almanac': Almanac(self.change_stage),
+            'almanac': Almanac(self.change_stage, None),
         }
 
         self.cur_stage = 'intro'
         self.menu = Menu(self.change_stage, self.check_menu_active)
         self.menu_active = False
         self.stages['finder'].tile_data = self.stages['planetfinder'].get_tile_data
+        self.stages['almanac'].unlocked_planet_data = self.stages['finder'].unlocked_planet_data
+        self.stages['almanac'].info_cards = self.stages['finder'].info_card_data()
 
         self.timer = Timer(300)
 
         self.clock = pygame.time.Clock()
 
     def check_menu_active(self, state, *args):
-        self.menu_active = state
-        self.timer.activate(self.change_stage, *args)
+        # self.menu_active = state
+        self.timer.activate(self.change_stage, state, *args)
 
-    def change_stage(self, next_state=None):
+    def change_stage(self,menu_state=False, next_state=None, *args):
         if next_state:
             self.cur_stage = next_state
             self.stages[self.cur_stage].refresh()
+        self.menu_active = menu_state
 
     def play(self, dt):
         self.timer.update()

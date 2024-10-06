@@ -3,6 +3,7 @@ import pygame
 from info_card import InfoCard
 from setup import *
 from stage import Stage
+from miscellaneous import AnimatedText
 
 
 class SpriteGroup(pygame.sprite.Group):
@@ -32,10 +33,12 @@ class Planet(Entity):
         self.info_card = info_card
         self.lock = lock
 
+    def unlock(self):
+        self.lock = False
+
     def check_collision(self):
         if self.rect.collidepoint(pygame.mouse.get_pos()) and pygame.mouse.get_pressed()[0]:
-            self.info_card(self.name, self.disc_data)
-            self.lock = False
+            self.info_card(self.name, self.disc_data, self.unlock)
 
     def update(self):
         self.check_collision()
@@ -63,9 +66,24 @@ class StarFinderLevel(Stage):
 
         font = pygame.font.Font(FONT, 17)
         self.helper_texts = [
-            (font.render("Welcome to the night sky map. Use this playground to find your exoplanets. You can use Stellarium or the Nasa Wiki for help.", False, "white"),
+            (font.render(
+                "Welcome to the night sky map. Use this playground to find your exoplanets. You can use Stellarium or the Nasa Wiki for help.",
+                False, "white"),
              (50, 590))
         ]
+
+        self.text_lines = [
+            "Commander: Let's recap your mission so you understand the consequences.",
+            "Commander: Our AI is gone because of those stupid multi-headed aliens.",
+            "Commander: We need you sargent to use this old piece of tech to find those multi-headed freaks",
+            "Commander: and find our precious AI before they do something with her ;(",
+            "Narrator: Find habitable exoplanets in the night sky using the map. You have to unlock ways to find them using mini games."
+        ]
+        self.helper_texts = [
+            AnimatedText(i, font, "white", (50, 590), self.change_text) for i in self.text_lines
+        ]
+        self.helper_index = 0
+        self.helper_texts[0].start_animation()
 
     def draw_lines(self, pos):
         pygame.draw.line(self.display, 'white', (pos[0], 0), (pos[0], WINDOW_HEIGHT))
@@ -77,7 +95,7 @@ class StarFinderLevel(Stage):
         if rect.collidepoint(mouse_pos):
             self.draw_lines(mouse_pos)
 
-    def invoke_info_card(self, name, planet_data):
+    def invoke_info_card(self, name, planet_data, unlock_planet):
         tile_data = self.tile_data()
 
         for tile in tile_data:
@@ -86,6 +104,7 @@ class StarFinderLevel(Stage):
                     pass
                 else:
                     self.view = name
+                    unlock_planet()
 
     def create_entities(self):
         for (x, y), (disc, name, *desc) in PLANET_DATA.items():
@@ -99,6 +118,24 @@ class StarFinderLevel(Stage):
     def refresh(self):
         self.view = "viewer"
 
+    def change_text(self):
+        self.helper_index += 1
+        if self.helper_index >= len(self.helper_texts):
+            self.helper_index = len(self.helper_texts) - 1
+        else:
+            self.helper_texts[self.helper_index].start_animation()
+
+    def unlocked_planet_data(self):
+        planet_data = []
+        for sprite in self.entities:
+            if not sprite.lock:
+                planet_data.append(sprite.name)
+
+        return planet_data
+
+    def info_card_data(self):
+        return self.info_cards
+
     def play(self, dt):
         self.display.blit(self.background, self.back_rect)
 
@@ -106,8 +143,7 @@ class StarFinderLevel(Stage):
             self.entities.update()
             self.entities.draw(self.display)
             self.check_active(self.active_rect)
-            for surf, pos in self.helper_texts:
-                self.display.blit(surf, pos)
+            self.helper_texts[self.helper_index].render(self.display)
 
         else:
             self.display.blit(self.dark_surf, (0, 0), special_flags=pygame.BLEND_RGBA_SUB)

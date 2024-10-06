@@ -12,7 +12,7 @@ class Stage:
         self.display = pygame.display.get_surface()
 
     def quit_state(self, next_state):
-        self.change_state(next_state)
+        self.change_state(False, next_state)
 
     def refresh(self):
         pass
