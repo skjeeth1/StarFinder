@@ -1,5 +1,6 @@
-import pygame, sys
 from random import choice
+
+import pygame
 
 from miscellaneous import Timer
 from setup import *
@@ -125,13 +126,12 @@ class Game:
         self.shoot_timer = GameTimer(800)
         self.shoot_timer.activate(self.shoot)
         self.victory = False
-        self.end_timer = GameTimer(10000)
+        self.end_timer = GameTimer(1000)
 
         self.clues = [
-            ["You've gained information on how to find the exoplanets.",
-             "Visit the Exoplanet Finder page to learn more."],
-            ["The aliens come from an exoplanet that was speculated",
-             "to be habitable in the year 2024."],
+            ["They seem to have stolen an encyclopedia from the mid Twenties",
+             "The book might provide more information"],
+            ["Congratulations!!", "You have successfully captured some aliens."],
         ]
 
     # Creating alien sprites
@@ -205,7 +205,7 @@ class Game:
 
             for ind, i in enumerate(self.clues[self.clue_num]):
                 surf = self.font.render(i, False, 'white')
-                rect = surf.get_rect(center=(WINDOW_LENGTH / 2, WINDOW_HEIGHT / 2 + ind * 30))
+                rect = surf.get_rect(center=(WINDOW_LENGTH / 2, WINDOW_HEIGHT / 2 + ind * 40 + 20))
 
                 screen.blit(surf, rect)
 
@@ -231,5 +231,5 @@ class Game:
             self.aliens.draw(screen)
             self.alien_lasers.draw(screen)
 
-        # if pygame.key.get_pressed()[pygame.K_k]:
-        #     self.aliens.empty()
+        if pygame.key.get_pressed()[pygame.K_k]:
+            self.aliens.empty()

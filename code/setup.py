@@ -20,7 +20,9 @@ PLANET_DATA = {
     (396, 517): ("Dips in Light", "Exoplanet TRAPPIST-1e",
                  "TRAPPIST-1e, is a rocky, close-to-Earth-sized exoplanet orbiting within the habitable zone around the ultracool dwarf star TRAPPIST-1, located 40.7 light-years away from Earth in the constellation of Aquarius.",
                  "Discovery: Transit", "Planet Type: Super Earth", "Year: 2016"),
-    (861, 333): ("Reading the Wobble", "Exoplanet HD-189733b","", "Discovery: Radial Velocity", "Planet Type: Gas Giant", "Year: 2005"),
+    (861, 333): (
+    "Reading the Wobble", "Exoplanet HD-189733b", "", "Discovery: Radial Velocity", "Planet Type: Gas Giant",
+    "Year: 2005"),
 }
 
 FINDER_DATA = {
@@ -33,3 +35,43 @@ FINDER_DATA = {
     "Direct Imaging": ("",
                        "This method captures pictures of exoplanets orbiting distant stars. It's very difficult to do, but it provides scientists with a lot of data about the planet, including its orbit and atmosphere.")
 }
+
+GAME_LORE = [
+    [
+        "Commander: Let's recap your mission one more time.",
+        "Commander: Our AI is stolen because of those stupid multi-headed aliens.",
+        "Commander: We need you sergeant to use this old piece of tech to find those multi-headed freaks' planet",
+        "Commander: before they reach, and take back our precious AI before they do something with her ;(",
+        "Commander: But how did our grandparents find these planets?     .    .    .",
+        "Narrator: Find exoplanets in the night sky using the map. ",
+        "Narrator: You can use Stellarium-web.org or the NASA website to get information.",
+        "Commander: LOOK!!! They're trying to steal something from us. They are invisible in our radar.",
+        "Commander: Fly the F/A 18 Hornet sergeant. This is going to get out of control.",
+        "Narrator: Goto the mini game tab and shoot the enemies down."
+    ],
+    [
+        "Commander: You did good sergeant bringing down those aliens! Too bad none survived.",
+        "Commander: Hmmm.. Looks likes this information is good! These aliens did us good by stealing some of ",
+        "Commander: these old encyclopedias.",
+        "Narrator: Goto the Exoplanet Finder page in the menu tab (top-left). Read about the information provided",
+        "Narrator: You can also view information about found exoplanets in the almanac tab of the menu.",
+        "Surroundings: BANGGGGGG!!!",
+        "Commander: OVER THERE!!!! Looks like these are the last ones! Try to keep them alive sergeant, ",
+        "Commander: and keep yourself dust free!",
+        "Narrator: Goto the mini game tab and fend off the last wave of aliens."
+    ],
+    [
+        "Commander: Looks like they are going back to their base, huh?",
+        "Commander: Habitable planets, hmmm? Didn't hear a lot about them from my grandparents.",
+        "Narrator: May be the almanac contains information about the planets you might've missed.",
+    ],
+    [
+        "Narrator: The planet you've choose is correct.",
+        "Commander: Yay! You have saved the world, sergeant!",
+        "Commander: The AI is safe and sound because of you!",
+    ],
+    [
+        "Commander: NOOOOOO!!!! They have escaped with vital information about earth!",
+        "Commander: Now we have no more information about where they escaped to!",
+    ]
+]

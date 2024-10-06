@@ -2,6 +2,7 @@ from math import sin
 
 import pygame
 
+
 class Button:
     def __init__(self, img, pos, func, *args):
         self.display = pygame.display.get_surface()
@@ -109,7 +110,7 @@ class AnimatedText:
 
     def animate_text(self):
         if self.animate and not self.key_press:
-            self.surface = self.font.render(self.text[:self.cur_index+1], False, self.color)
+            self.surface = self.font.render(self.text[:self.cur_index + 1], False, self.color)
             self.cur_index += 1
 
             if self.cur_index >= len(self.text):

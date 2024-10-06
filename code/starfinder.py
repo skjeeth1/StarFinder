@@ -44,7 +44,7 @@ class Planet(Entity):
 
 
 class StarFinderLevel(Stage):
-    def __init__(self, change_state, lock_data) -> None:
+    def __init__(self, change_state, game_over, lock_data) -> None:
         super().__init__(change_state)
 
         self.tile_data = lock_data
@@ -52,6 +52,8 @@ class StarFinderLevel(Stage):
         self.back_rect = self.background.get_rect(top=0, left=0)
         self.dark_surf = pygame.Surface((WINDOW_LENGTH, WINDOW_HEIGHT), pygame.SRCALPHA)
         self.dark_surf.fill((50, 50, 50, 0))
+
+        self.game_over = game_over
 
         self.active_area = pygame.Surface((WINDOW_LENGTH - 100, WINDOW_HEIGHT - 100))
         self.active_rect = self.active_area.get_rect(center=self.back_rect.center)
@@ -64,29 +66,8 @@ class StarFinderLevel(Stage):
         self.view = "viewer"
 
         font = pygame.font.Font(FONT, 17)
-        self.text_lines = [
-            [
-                "Commander: Let's recap your mission one more time.",
-                "Commander: Our AI is stolen because of those stupid multi-headed aliens.",
-                "Commander: We need you sergeant to use this old piece of tech to find those multi-headed freaks' planet",
-                "Commander: before they reach, and take back our precious AI before they do something with her ;(",
-                "Commander: But how did our grandparents find these planets?     .    .    .",
-                "Narrator: Find exoplanets in the night sky using the map. You have to unlock clues using mini games.",
-                "Narrator: You can use Stellarium-web.org or the NASA website to get information.",
-            ],
-            [
-                "Commander: Hmmm.. Looks likes this information is good! These aliens did us good by stealing some of ",
-                "Commander: these old encyclopedias.",
-                "Narrator: Goto the Exoplanet Finder page in the menu tab (top-left). Read about the information provided",
-                "Narrator: and try to find exoplanets found using those methods in night sky map.",
-                "Narrator: You can also view information about found exoplanets in the almanac tab of the menu."
-            ],
-            [
-                "Commander: Looks like they are going back to their base, huh?",
-                "Commander: Habitable planets, hmmm? Didn't hear a lot about them from my grandparents.",
-                "Narrator: May be the almanac contains information about the planets you might've missed.",
-            ]
-        ]
+        self.text_lines = GAME_LORE
+
         self.helper_texts = [
             [AnimatedText(i, font, "white", (50, 590), self.change_text) for i in self.text_lines[j]]
             for j in range(len(self.text_lines))
@@ -138,6 +119,8 @@ class StarFinderLevel(Stage):
         self.helper_index += 1
         if self.helper_index >= len(self.helper_texts[self.helper_lines]):
             self.helper_index = len(self.helper_texts[self.helper_lines]) - 1
+            if self.helper_lines == -1:
+                self.game_over()
         else:
             self.helper_texts[self.helper_lines][self.helper_index].start_animation()
 
@@ -153,9 +136,15 @@ class StarFinderLevel(Stage):
         return self.info_cards
 
     def clue_received(self, clue_num):
-        self.helper_lines = clue_num if clue_num != -1 else -1
+        self.helper_lines = clue_num
         self.helper_index = 0
         self.helper_texts[self.helper_lines][0].start_animation()
+
+    def input_receiver(self, planet):
+        if planet == "Exoplanet TRAPPIST-1e":
+            self.helper_lines = -2
+            self.helper_index = 0
+            self.helper_texts[self.helper_lines][0].start_animation()
 
     def play(self, dt):
         self.display.blit(self.background, self.back_rect)

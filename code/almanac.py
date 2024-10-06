@@ -39,7 +39,7 @@ class Almanac(Stage):
         self.title = pygame.font.Font(TITLE_FONT, 50).render("EXOPLANET ALMANAC", False, "white")
 
         self.locked_surf = pygame.Surface(self.tile_size, pygame.SRCALPHA)
-        surf_1 = self.font_2.render("Unlock this", False, "#EEEEEE")
+        surf_1 = self.font_2.render("Find this", False, "#EEEEEE")
         surf_2 = self.font_1.render("Planet", False, "#EEEEEE")
         rect_1 = surf_1.get_rect(
             center=(self.locked_surf.get_width() // 2, self.locked_surf.get_height() // 2 - 25))
@@ -62,8 +62,10 @@ class Almanac(Stage):
         self.background.blit(surf, (0, 0), special_flags=pygame.BLEND_RGBA_SUB)
         self.back_rect = self.background.get_rect(top=0, left=0)
 
-        self.right_button = Button("assets/images/next.png",(1250, WINDOW_HEIGHT // 2 + 50), self.change_page, 1)
+        self.right_button = Button("assets/images/next.png", (1250, WINDOW_HEIGHT // 2 + 50), self.change_page, 1)
         self.left_button = Button("assets/images/previous.png", (30, WINDOW_HEIGHT // 2 + 50), self.change_page, 0)
+
+        self.page_text = self.font_2.render(f"Page {self.page + 1} / {len(self.tiles) // 2}", False, 'white')
 
     def create_tiles(self):
         for ind, (disc, name, *data) in enumerate(PLANET_DATA.values()):
@@ -98,11 +100,13 @@ class Almanac(Stage):
         if args[0]:
             self.page += 1
             if self.page >= len(self.tiles) // 2:
-                self.page = len(self.tiles) // 2
+                self.page = len(self.tiles) // 2 - 1
         elif not args[0]:
             self.page -= 1
             if self.page <= 0:
                 self.page = 0
+
+        self.page_text = self.font_2.render(f"Page {self.page + 1} / {len(self.tiles) // 2}", False, 'white')
 
     def refresh(self):
         self.view = "viewer"
@@ -122,7 +126,7 @@ class Almanac(Stage):
             self.display.blit(self.title, (100, 70))
             self.right_button.draw()
             self.left_button.draw()
-            # self.display.blit(self.helper_text, (800, WINDOW_HEIGHT - 50))
+            self.display.blit(self.page_text, (1100, WINDOW_HEIGHT - 50))
             for tile in self.tiles[self.page * 2:(self.page + 1) * 2]:
                 tile.render_tile()
         else:

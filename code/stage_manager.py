@@ -1,6 +1,7 @@
 import pygame
 
 from almanac import Almanac
+from launch import Launch
 from miscellaneous import Timer
 from planet_finder import PlanetFinder
 from setup import WINDOW_HEIGHT, FONT, TITLE_FONT
@@ -9,12 +10,13 @@ from starfinder import StarFinderLevel
 
 
 class StageManager:
-    def __init__(self, invoke_mini_game) -> None:
+    def __init__(self, invoke_mini_game, game_over) -> None:
         self.stages = {
             'intro': Intro(self.change_stage),
-            'finder': StarFinderLevel(self.change_stage, None),
+            'finder': StarFinderLevel(self.change_stage, game_over, None),
             'planetfinder': PlanetFinder(self.change_stage),
             'almanac': Almanac(self.change_stage, None),
+            'launch': Launch(self.change_stage, None)
         }
 
         self.invoke_mini_game = invoke_mini_game
@@ -24,11 +26,17 @@ class StageManager:
         self.menu_active = False
         self.stages['finder'].tile_data = self.stages['planetfinder'].get_tile_data
         self.stages['almanac'].unlocked_planet_data = self.stages['finder'].unlocked_planet_data
+        self.stages['launch'].unlocked_planet_data = self.stages['finder'].unlocked_planet_data
         self.stages['almanac'].info_cards = self.stages['finder'].info_card_data()
+        self.stages['launch'].check_game_win = self.check_win_view
 
         self.timer = Timer(300)
 
         self.clock = pygame.time.Clock()
+
+    def check_win_view(self, planet):
+        self.cur_stage = 'finder'
+        self.stages['finder'].input_receiver(planet)
 
     def check_menu_active(self, state, *args):
         # self.menu_active = state
@@ -50,6 +58,8 @@ class StageManager:
         if status:
             self.stages['planetfinder'].unlock_tiles()
             self.stages['finder'].clue_received(clue)
+        else:
+            self.stages['finder'].clue_received(-1)
 
     def play(self, dt):
         self.timer.update()
@@ -88,6 +98,7 @@ class Menu:
             "Exoplanet Finder": "planetfinder",
             "Exoplanet Almanac": "almanac",
             "Play a Mini Game": "mini",
+            "Launch Voyage": "launch",
         }
 
         self.rendered_text = []
