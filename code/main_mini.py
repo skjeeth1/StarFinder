@@ -126,7 +126,7 @@ class Game:
         self.shoot_timer = GameTimer(800)
         self.shoot_timer.activate(self.shoot)
         self.victory = False
-        self.end_timer = GameTimer(1000)
+        self.end_timer = GameTimer(8000)
 
         self.clues = [
             ["They seem to have stolen an encyclopedia from the mid Twenties",
@@ -233,5 +233,5 @@ class Game:
             self.aliens.draw(screen)
             self.alien_lasers.draw(screen)
 
-        if pygame.key.get_pressed()[pygame.K_k]:
-            self.aliens.empty()
+        # if pygame.key.get_pressed()[pygame.K_k]:
+        #     self.aliens.empty()

@@ -14,7 +14,8 @@ class MainGame:
         self.display = pygame.display.set_mode((WINDOW_LENGTH, WINDOW_HEIGHT))
 
         self.stage_manager = StageManager(self.invoke_mini_game, self.game_over, self.game_win)
-        pygame.display.set_caption("Web the Universe")
+        pygame.display.set_caption("Mission StarFinder")
+        pygame.display.set_icon(pygame.image.load("assets/images/icon.png"))
 
         self.font = pygame.font.SysFont('calibri', 30)
         self.clock = pygame.time.Clock()
