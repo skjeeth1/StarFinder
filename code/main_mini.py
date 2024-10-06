@@ -132,6 +132,7 @@ class Game:
             ["They seem to have stolen an encyclopedia from the mid Twenties",
              "The book might provide more information"],
             ["Congratulations!!", "You have successfully captured some aliens."],
+
         ]
 
     # Creating alien sprites
@@ -203,11 +204,12 @@ class Game:
             victor_rect = victor_surf.get_rect(center=(WINDOW_LENGTH / 2, WINDOW_HEIGHT / 2 - 40))
             screen.blit(victor_surf, victor_rect)
 
-            for ind, i in enumerate(self.clues[self.clue_num]):
-                surf = self.font.render(i, False, 'white')
-                rect = surf.get_rect(center=(WINDOW_LENGTH / 2, WINDOW_HEIGHT / 2 + ind * 40 + 20))
+            if self.clue_num < len(self.clues):
+                for ind, i in enumerate(self.clues[self.clue_num]):
+                    surf = self.font.render(i, False, 'white')
+                    rect = surf.get_rect(center=(WINDOW_LENGTH / 2, WINDOW_HEIGHT / 2 + ind * 40 + 20))
 
-                screen.blit(surf, rect)
+                    screen.blit(surf, rect)
 
     # Main running method
     def run(self, screen):

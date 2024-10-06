@@ -1,7 +1,7 @@
 WINDOW_HEIGHT = 640
 WINDOW_LENGTH = 1280
 
-TITLE_FONT = "assets/fonts/sterion-font/Sterion-BLLld.ttf"
+TITLE_FONT = "assets/fonts/ethnocentric-font/ethnocentric rg.otf"
 FONT = "assets/fonts/audiowide-font/Audiowide-Regular.ttf"
 
 PLANET_DATA = {
@@ -21,8 +21,10 @@ PLANET_DATA = {
                  "TRAPPIST-1e, is a rocky, close-to-Earth-sized exoplanet orbiting within the habitable zone around the ultracool dwarf star TRAPPIST-1, located 40.7 light-years away from Earth in the constellation of Aquarius.",
                  "Discovery: Transit", "Planet Type: Super Earth", "Year: 2016"),
     (861, 333): (
-    "Reading the Wobble", "Exoplanet HD-189733b", "", "Discovery: Radial Velocity", "Planet Type: Gas Giant",
-    "Year: 2005"),
+        "Reading the Wobble", "Exoplanet HD-189733b",
+        "HD 189733b is an exoplanet located approximately 64 light-years away from Earth in the constellation Vulpecula. The planet is noted for its striking cobalt blue color, which is attributed to its thick, hazy atmosphere filled with silicate clouds.",
+        "Discovery: Radial Velocity", "Planet Type: Gas Giant",
+        "Year: 2005"),
 }
 
 FINDER_DATA = {
@@ -42,7 +44,8 @@ GAME_LORE = [
         "Commander: Our AI is stolen because of those stupid multi-headed aliens.",
         "Commander: We need you sergeant to use this old piece of tech to find those multi-headed freaks' planet",
         "Commander: before they reach, and take back our precious AI before they do something with her ;(",
-        "Commander: But how did our grandparents find these planets?     .    .    .",
+        "Commander: We only have one mission to reach there sergeant! No mistakes or it is the end of modern civilization.",
+        "Commander: Your mission is to find the exoplanet and man the mission, while keeping raids at bay.",
         "Narrator: Find exoplanets in the night sky using the map. ",
         "Narrator: You can use Stellarium-web.org or the NASA website to get information.",
         "Commander: LOOK!!! They're trying to steal something from us. They are invisible in our radar.",
@@ -53,25 +56,34 @@ GAME_LORE = [
         "Commander: You did good sergeant bringing down those aliens! Too bad none survived.",
         "Commander: Hmmm.. Looks likes this information is good! These aliens did us good by stealing some of ",
         "Commander: these old encyclopedias.",
-        "Narrator: Goto the Exoplanet Finder page in the menu tab (top-left). Read about the information provided",
+        "Narrator: Goto the Exoplanet Finder page in the menu tab (top-left). Read about the information provided.",
         "Narrator: You can also view information about found exoplanets in the almanac tab of the menu.",
         "Surroundings: BANGGGGGG!!!",
         "Commander: OVER THERE!!!! Looks like these are the last ones! Try to keep them alive sergeant, ",
         "Commander: and keep yourself dust free!",
-        "Narrator: Goto the mini game tab and fend off the last wave of aliens."
+        "Narrator: Goto the mini game tab and fend off the last wave of aliens.",
     ],
     [
-        "Commander: Looks like they are going back to their base, huh?",
-        "Commander: Habitable planets, hmmm? Didn't hear a lot about them from my grandparents.",
-        "Narrator: May be the almanac contains information about the planets you might've missed.",
+        "Commander: We are getting intel on these aliens. Hmm... They seem to function vaguely like us humans.",
+        "Commander: Does that mean we shift focus to habitable exoplanets? What do you think sergeant?",
+        "Narrator: Goto launch and choose the planet to which you might think the aliens escaped to.",
     ],
     [
-        "Narrator: The planet you've choose is correct.",
+        "Narrator: Sending Voyage!",
+        "Commander: This seems to be a desolate land with no activity of life.",
+        "Commander: We chose the wrong exoplanet sergeant!",
+        "Narrator: Game Over!",
+
+    ],
+    [
+        "Narrator: Sending Voyage!",
+        "Narrator: The planet you've chosen is correct.",
         "Commander: Yay! You have saved the world, sergeant!",
         "Commander: The AI is safe and sound because of you!",
     ],
     [
         "Commander: NOOOOOO!!!! They have escaped with vital information about earth!",
         "Commander: Now we have no more information about where they escaped to!",
+        "Narrator: Game Over!",
     ]
 ]

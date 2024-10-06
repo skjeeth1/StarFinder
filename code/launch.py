@@ -48,7 +48,7 @@ class Launch(Stage):
         self.left_button = Button("assets/images/previous.png", (30, WINDOW_HEIGHT // 2 + 50), self.change_page, 0)
 
         self.page_text = self.font_2.render(f"Page {self.page + 1} / {len(self.tiles) // 4 + 1}", False, 'white')
-        self.helper_text = self.font_2.render("Press Enter to launch", False, 'white')
+        self.helper_text = self.font_2.render("Select a Planet and press Enter to launch", False, 'white')
 
     def create_tiles(self):
         for ind, (disc, name, *data) in enumerate(PLANET_DATA.values()):

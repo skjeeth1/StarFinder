@@ -44,7 +44,7 @@ class Planet(Entity):
 
 
 class StarFinderLevel(Stage):
-    def __init__(self, change_state, game_over, lock_data) -> None:
+    def __init__(self, change_state, game_over, game_win, lock_data) -> None:
         super().__init__(change_state)
 
         self.tile_data = lock_data
@@ -54,6 +54,7 @@ class StarFinderLevel(Stage):
         self.dark_surf.fill((50, 50, 50, 0))
 
         self.game_over = game_over
+        self.game_win = game_win
 
         self.active_area = pygame.Surface((WINDOW_LENGTH - 100, WINDOW_HEIGHT - 100))
         self.active_rect = self.active_area.get_rect(center=self.back_rect.center)
@@ -119,8 +120,10 @@ class StarFinderLevel(Stage):
         self.helper_index += 1
         if self.helper_index >= len(self.helper_texts[self.helper_lines]):
             self.helper_index = len(self.helper_texts[self.helper_lines]) - 1
-            if self.helper_lines == -1:
+            if self.helper_lines == -1 or self.helper_lines == -3:
                 self.game_over()
+            elif self.helper_lines == -2:
+                self.game_win()
         else:
             self.helper_texts[self.helper_lines][self.helper_index].start_animation()
 
@@ -143,6 +146,10 @@ class StarFinderLevel(Stage):
     def input_receiver(self, planet):
         if planet == "Exoplanet TRAPPIST-1e":
             self.helper_lines = -2
+            self.helper_index = 0
+            self.helper_texts[self.helper_lines][0].start_animation()
+        else:
+            self.helper_lines = -3
             self.helper_index = 0
             self.helper_texts[self.helper_lines][0].start_animation()
 

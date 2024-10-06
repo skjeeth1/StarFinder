@@ -10,10 +10,10 @@ from starfinder import StarFinderLevel
 
 
 class StageManager:
-    def __init__(self, invoke_mini_game, game_over) -> None:
+    def __init__(self, invoke_mini_game, game_over, game_win) -> None:
         self.stages = {
             'intro': Intro(self.change_stage),
-            'finder': StarFinderLevel(self.change_stage, game_over, None),
+            'finder': StarFinderLevel(self.change_stage, game_over, game_win,None),
             'planetfinder': PlanetFinder(self.change_stage),
             'almanac': Almanac(self.change_stage, None),
             'launch': Launch(self.change_stage, None)
