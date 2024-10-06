@@ -1,7 +1,7 @@
 We the members of Webb the Universe, Srikrishna Sathyajeeth and Anand P Nair, developed a python game that helps young minds to discover more about the existence of exoplanets.
 This game aims to address the issue with learning, that is, boredom.
 This game provides a fun interactive experience to keep the learner interested throughout the experience.
-We hope expose more kids to this field as this is the future.
+We hope  to expose more children to this field as this is the future.
 We mainly used Python (Pycharm and Spyder(anaconda3) and some websites to get assets. 
 In terms of hardware it was all coded on laptops. 
 
