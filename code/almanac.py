@@ -1,13 +1,28 @@
 import pygame
 
-from stage import Stage
-from setup import *
-from planet_finder import Tiles
 from miscellaneous import Button
+from planet_finder import Tiles
+from setup import *
+from stage import Stage
 
 
 class NewTiles(Tiles):
-    pass
+    def render_text(self):
+        surf_1 = self.font_2.render(' '.join(self.name.split()[0]), False, "#EEEEEE")
+        surf_2 = self.font_1.render(self.name.split()[-1], False, "#EEEEEE")
+        rect_1 = surf_1.get_rect(
+            midleft=(50, 60))
+        rect_2 = surf_2.get_rect(
+            midleft=(50, 120))
+
+        self.surf.blit(surf_1, rect_1)
+        self.surf.blit(surf_2, rect_2)
+
+        for ind, i in enumerate(self.data[1:]):
+            surf = self.font_2.render(i, False, "#EEEEEE")
+            rect = surf.get_rect(midleft=(50, ind*40+270))
+
+            self.surf.blit(surf, rect)
 
 
 class Almanac(Stage):
@@ -48,14 +63,14 @@ class Almanac(Stage):
         self.right_button = Button((1250, WINDOW_HEIGHT // 2 + 50), self.change_page, 1)
         self.left_button = Button((30, WINDOW_HEIGHT // 2 + 50), self.change_page, 0)
 
-        print(len(self.tiles))
+
 
     def create_tiles(self):
-        for ind, (disc, name, data) in enumerate(PLANET_DATA.values()):
+        for ind, (disc, name, *data) in enumerate(PLANET_DATA.values()):
             self.tiles.append(
                 NewTiles(self.tile_size,
                          ((ind % 2) * (self.tile_size[0] + 50) + WINDOW_LENGTH // 5 + 100, WINDOW_HEIGHT // 2 + 50),
-                         False, name, self.font_1, self.font_2, self.locked_surf)
+                         True, name, self.font_1, self.font_2, self.locked_surf, data)
             )
 
     def on_hover(self):
@@ -76,7 +91,7 @@ class Almanac(Stage):
 
     def unlock_tile(self, name):
         for tile in self.tiles:
-            if tile.data == name:
+            if tile.name == name:
                 tile.lock = False
 
     def change_page(self, *args):

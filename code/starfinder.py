@@ -35,6 +35,7 @@ class Planet(Entity):
     def check_collision(self):
         if self.rect.collidepoint(pygame.mouse.get_pos()) and pygame.mouse.get_pressed()[0]:
             self.info_card(self.name, self.disc_data)
+            self.lock = False
 
     def update(self):
         self.check_collision()
@@ -59,7 +60,12 @@ class StarFinderLevel(Stage):
         self.cur_entity = ''
 
         self.view = "viewer"
-        # print(self.info_cards)
+
+        font = pygame.font.Font(FONT, 17)
+        self.helper_texts = [
+            (font.render("Welcome to the night sky map. Use this playground to find your exoplanets. You can use Stellarium or the Nasa Wiki for help.", False, "white"),
+             (50, 590))
+        ]
 
     def draw_lines(self, pos):
         pygame.draw.line(self.display, 'white', (pos[0], 0), (pos[0], WINDOW_HEIGHT))
@@ -75,7 +81,7 @@ class StarFinderLevel(Stage):
         tile_data = self.tile_data()
 
         for tile in tile_data:
-            if tile.data == planet_data:
+            if tile.name == planet_data:
                 if tile.lock:
                     pass
                 else:
@@ -83,7 +89,7 @@ class StarFinderLevel(Stage):
 
     def create_entities(self):
         for (x, y), (disc, name, *desc) in PLANET_DATA.items():
-            Planet(self.entities, (x, y), name, False, disc, self.invoke_info_card)
+            Planet(self.entities, (x, y), name, True, disc, self.invoke_info_card)
 
             texts = [(FONT, 30, i, (100, ind * 75 + 250)) for ind, i in enumerate(desc)]
             texts.append((FONT, 40, name, (100, 100)))
@@ -100,6 +106,8 @@ class StarFinderLevel(Stage):
             self.entities.update()
             self.entities.draw(self.display)
             self.check_active(self.active_rect)
+            for surf, pos in self.helper_texts:
+                self.display.blit(surf, pos)
 
         else:
             self.display.blit(self.dark_surf, (0, 0), special_flags=pygame.BLEND_RGBA_SUB)

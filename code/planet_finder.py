@@ -5,23 +5,24 @@ from stage import Stage
 
 
 class Tiles:
-    def __init__(self, size, pos, lock, data, font_1, font_2=None, lock_surf=None):
+    def __init__(self, size, pos, lock, name, font_1, font_2=None, lock_surf=None, data=None):
         self.display = pygame.display.get_surface()
 
         self.surf = pygame.Surface(size, pygame.SRCALPHA)
         self.rect = self.surf.get_rect(center=pos)
         self.lock = lock
         self.lock_surf = lock_surf
-        self.data = data
+        self.name = name
 
         self.font_1 = font_1
         self.font_2 = font_2
+        self.data = data
 
         self.render_text()
 
     def render_text(self):
-        surf_1 = self.font_2.render(' '.join(self.data.split()[:-1]), False, "#EEEEEE")
-        surf_2 = self.font_1.render(self.data.split()[-1], False, "#EEEEEE")
+        surf_1 = self.font_2.render(' '.join(self.name.split()[:-1]), False, "#EEEEEE")
+        surf_2 = self.font_1.render(self.name.split()[-1], False, "#EEEEEE")
         rect_1 = surf_1.get_rect(
             center=(self.surf.get_width() // 2, self.surf.get_height() // 2 - 25))
         rect_2 = surf_2.get_rect(
@@ -98,7 +99,7 @@ class PlanetFinder(Stage):
 
     def unlock_tile(self, name):
         for tile in self.tiles:
-            if tile.data == name:
+            if tile.name == name:
                 tile.lock = False
 
     def play(self, dt):

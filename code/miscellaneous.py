@@ -26,11 +26,9 @@ class Button:
 
     def change_state(self):
         self.active = True
-        print("blah")
 
     def draw(self):
         self.timer.update()
-        print(self.active)
         self.display.blit(self.image, self.rect)
         self.on_click()
 
@@ -90,3 +88,19 @@ class Timer:
             current_time = pygame.time.get_ticks()
             if current_time - self.start_time >= self.duration:
                 self.deactivate()
+
+
+class Text:
+    def __init__(self, text, font: pygame.Font, color, pos, animate=False):
+        self.text = text
+        self.surface = font.render(text, False, color)
+        self.rect = self.surface.get_rect(topleft=pos)
+
+        self.animate = animate
+
+    def animate_text(self):
+        if self.animate:
+            pass
+
+    def render(self, surface):
+        surface.blit(self.surface, self.rect)
