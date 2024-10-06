@@ -18,7 +18,7 @@ class NewTiles(Tiles):
         self.surf.blit(surf_1, rect_1)
         self.surf.blit(surf_2, rect_2)
 
-        for ind, i in enumerate(self.data[1:]):
+        for ind, i in enumerate(self.data[-3:]):
             surf = self.font_2.render(i, False, "#EEEEEE")
             rect = surf.get_rect(midleft=(50, ind * 40 + 270))
 

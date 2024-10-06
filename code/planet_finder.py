@@ -1,6 +1,6 @@
 import pygame
 
-from setup import WINDOW_HEIGHT, WINDOW_LENGTH, FONT, TITLE_FONT, FINDER_DATA
+from setup import *
 from stage import Stage
 
 
@@ -75,9 +75,12 @@ class PlanetFinder(Stage):
         ]
 
         # self.tiles[0].lock = False
-        self.tiles[1].lock = False
+        # self.tiles[1].lock = False
 
         self.helper_text = self.font_2.render("Unlock Methods by playing Mini Games", False, 'white')
+
+        # self.latest_unlocked_tile = None
+        # self.unlock_timer = Timer(4000)
 
     def on_hover(self):
         if self.view == 'viewer':
@@ -97,10 +100,9 @@ class PlanetFinder(Stage):
     def refresh(self):
         self.view = "viewer"
 
-    def unlock_tile(self, name):
+    def unlock_tiles(self, ):
         for tile in self.tiles:
-            if tile.name == name:
-                tile.lock = False
+            tile.lock = False
 
     def play(self, dt):
         self.display.blit(self.background, self.back_rect)

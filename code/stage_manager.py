@@ -1,5 +1,7 @@
 import pygame
+from random import choice
 
+from setup import FINDER_DATA
 from miscellaneous import Timer
 from planet_finder import PlanetFinder
 from setup import WINDOW_HEIGHT, FONT, TITLE_FONT
@@ -9,13 +11,15 @@ from almanac import Almanac
 
 
 class StageManager:
-    def __init__(self) -> None:
+    def __init__(self, invoke_mini_game) -> None:
         self.stages = {
             'intro': Intro(self.change_stage),
             'finder': StarFinderLevel(self.change_stage, None),
             'planetfinder': PlanetFinder(self.change_stage),
             'almanac': Almanac(self.change_stage, None),
         }
+
+        self.invoke_mini_game = invoke_mini_game
 
         self.cur_stage = 'intro'
         self.menu = Menu(self.change_stage, self.check_menu_active)
@@ -30,13 +34,25 @@ class StageManager:
 
     def check_menu_active(self, state, *args):
         # self.menu_active = state
+        if len(args) >= 1:
+            if args[0] == "mini":
+                self.timer.activate(self.change_stage, state, "finder")
+                self.invoke_mini_game()
+                return
+
         self.timer.activate(self.change_stage, state, *args)
 
-    def change_stage(self,menu_state=False, next_state=None, *args):
+    def change_stage(self, menu_state=False, next_state=None, *args):
         if next_state:
             self.cur_stage = next_state
             self.stages[self.cur_stage].refresh()
         self.menu_active = menu_state
+
+    def get_mini_game_status(self, status, clue):
+        if status:
+            self.stages['planetfinder'].unlock_tiles()
+            self.stages['finder'].clue_received(clue)
+
 
     def play(self, dt):
         self.timer.update()
@@ -76,7 +92,7 @@ class Menu:
             "Night Sky Viewer": "finder",
             "Exoplanet Finder": "planetfinder",
             "Exoplanet Almanac": "almanac",
-            "Play a Mini Game": "blah",
+            "Play a Mini Game": "mini",
         }
 
         self.rendered_text = []

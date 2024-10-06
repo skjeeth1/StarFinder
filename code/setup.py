@@ -5,11 +5,11 @@ TITLE_FONT = "assets/fonts/sterion-font/Sterion-BLLld.ttf"
 FONT = "assets/fonts/audiowide-font/Audiowide-Regular.ttf"
 
 PLANET_DATA = {
-    (360, 273): ("Dips in Light", "Exoplanet HAT-P-7b", "Lorem Ipsum", "Discovery: Transit", "Planet Type: Gas Giant", "Year: 2008"),
+    (360, 273): ("Dips in Light", "Exoplanet HAT-P-7b", "HAT-P-7b (or Kepler-2b) is an extrasolar planet discovered in 2008. It orbits very close to its host star and is larger and more massive than Jupiter.", "Discovery: Transit", "Planet Type: Gas Giant", "Year: 2008"),
     (382, 295): ("Dips in Light", 'Exoplanet Kepler-1625b', "Lorem Ipsum", "Discovery: Transit", "Planet Type: Neptune-like", "Year: 2016"),
     (371, 420): ("Reading the Wobble", "Exoplanet HD-209458b", "Lorem Ipsum","Discovery: Radial Velocity", "Planet Type: Gas Giant", "Year: 1999"),
     (1018, 107): ("Dips in Light","Exoplanet K2-18b", "Lorem Ipsum","Discovery: Transit", "Planet Type: Super Earth", "Year: 2015"),
-    (396, 517): ("Dips in Light","Exoplanet TRAPPIST-1b", "Lorem Ipsum", "Discovery: Transit", "Planet Type: Super Earth", "Year: 2016"),
+    (396, 517): ("Dips in Light","Exoplanet TRAPPIST-1e", "Lorem Ipsum", "Discovery: Transit", "Planet Type: Super Earth", "Year: 2016"),
 }
 
 FINDER_DATA = {

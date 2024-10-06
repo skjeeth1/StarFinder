@@ -22,10 +22,21 @@ class InfoCard:
 
     def render_text(self):
         for font, size, data, pos in self.data:
-            surf = pygame.font.Font(font, size).render(data, False, "white")
-            rect = surf.get_rect(topleft=pos)
+            data = data.split()
+            spc_ind = [ind for ind, i in enumerate(data) if i == " "]
 
-            self.rendered_texts.append((surf, rect))
+            split_ind = []
+            prev_ind = 0
+            for i in spc_ind:
+                if i - prev_ind >= 25:
+                    split_ind.append((prev_ind, i))
+                    prev_ind = 0
+
+            for i in range(0, len(data), 5):
+                surf = pygame.font.Font(font, size).render(" ".join(data[i:min(i + 5, len(data))]), False, "white")
+                rect = surf.get_rect(topleft=(pos[0], pos[1] + (i // 5 * 35)))
+
+                self.rendered_texts.append((surf, rect))
 
     def check_collision(self):
         if self.back_icon_rect.collidepoint(pygame.mouse.get_pos()) and pygame.mouse.get_pressed()[0]:

@@ -1,9 +1,9 @@
 import pygame
 
 from info_card import InfoCard
+from miscellaneous import AnimatedText
 from setup import *
 from stage import Stage
-from miscellaneous import AnimatedText
 
 
 class SpriteGroup(pygame.sprite.Group):
@@ -65,25 +65,37 @@ class StarFinderLevel(Stage):
         self.view = "viewer"
 
         font = pygame.font.Font(FONT, 17)
-        self.helper_texts = [
-            (font.render(
-                "Welcome to the night sky map. Use this playground to find your exoplanets. You can use Stellarium or the Nasa Wiki for help.",
-                False, "white"),
-             (50, 590))
-        ]
-
         self.text_lines = [
-            "Commander: Let's recap your mission so you understand the consequences.",
-            "Commander: Our AI is gone because of those stupid multi-headed aliens.",
-            "Commander: We need you sargent to use this old piece of tech to find those multi-headed freaks",
-            "Commander: and find our precious AI before they do something with her ;(",
-            "Narrator: Find habitable exoplanets in the night sky using the map. You have to unlock ways to find them using mini games."
+            [
+                "Commander: Let's recap your mission one more time.",
+                "Commander: Our AI is stolen because of those stupid multi-headed aliens.",
+                "Commander: We need you sergeant to use this old piece of tech to find those multi-headed freaks' planet",
+                "Commander: before they reach, and take back our precious AI before they do something with her ;(",
+                "Commander: But how did our grandparents find these planets?     .    .    .",
+                "Narrator: Find exoplanets in the night sky using the map. You have to unlock clues using mini games.",
+                "Narrator: You can use Stellarium-web.org or the NASA website to get information.",
+            ],
+            [
+                "Commander: Hmmm.. Looks likes this information is good! These aliens did us good by stealing some of ",
+                "Commander: these old encyclopedias.",
+                "Narrator: Goto the Exoplanet Finder page in the menu tab (top-left). Read about the information provided",
+                "Narrator: and try to find exoplanets found using those methods in night sky map.",
+                "Narrator: You can also view information about found exoplanets in the almanac tab of the menu."
+            ],
+            [
+                "Commander: Looks like they are going back to their base, huh?",
+                "Commander: Habitable planets, hmmm? Didn't hear a lot about them from my grandparents.",
+                "Narrator: May be the almanac contains information about the planets you might've missed.",
+            ]
         ]
         self.helper_texts = [
-            AnimatedText(i, font, "white", (50, 590), self.change_text) for i in self.text_lines
+            [AnimatedText(i, font, "white", (50, 590), self.change_text) for i in self.text_lines[j]]
+            for j in range(len(self.text_lines))
         ]
+        self.helper_lines = 0
+
         self.helper_index = 0
-        self.helper_texts[0].start_animation()
+        self.helper_texts[self.helper_lines][0].start_animation()
 
     def draw_lines(self, pos):
         pygame.draw.line(self.display, 'white', (pos[0], 0), (pos[0], WINDOW_HEIGHT))
@@ -110,8 +122,10 @@ class StarFinderLevel(Stage):
         for (x, y), (disc, name, *desc) in PLANET_DATA.items():
             Planet(self.entities, (x, y), name, True, disc, self.invoke_info_card)
 
-            texts = [(FONT, 30, i, (100, ind * 75 + 250)) for ind, i in enumerate(desc)]
+            texts = [(FONT, 30, i, (100, ind * 75 + 250 )) for ind, i in enumerate(desc)]
             texts.append((FONT, 40, name, (100, 100)))
+
+            texts = [(FONT, 25, desc[0], (100, 325))]
 
             self.info_cards[name] = InfoCard(None, None, self.refresh, *texts)
 
@@ -120,10 +134,10 @@ class StarFinderLevel(Stage):
 
     def change_text(self):
         self.helper_index += 1
-        if self.helper_index >= len(self.helper_texts):
-            self.helper_index = len(self.helper_texts) - 1
+        if self.helper_index >= len(self.helper_texts[self.helper_lines]):
+            self.helper_index = len(self.helper_texts[self.helper_lines]) - 1
         else:
-            self.helper_texts[self.helper_index].start_animation()
+            self.helper_texts[self.helper_lines][self.helper_index].start_animation()
 
     def unlocked_planet_data(self):
         planet_data = []
@@ -136,6 +150,11 @@ class StarFinderLevel(Stage):
     def info_card_data(self):
         return self.info_cards
 
+    def clue_received(self, clue_num):
+        self.helper_lines = clue_num if clue_num != -1 else -1
+        self.helper_index = 0
+        self.helper_texts[self.helper_lines][0].start_animation()
+
     def play(self, dt):
         self.display.blit(self.background, self.back_rect)
 
@@ -143,7 +162,7 @@ class StarFinderLevel(Stage):
             self.entities.update()
             self.entities.draw(self.display)
             self.check_active(self.active_rect)
-            self.helper_texts[self.helper_index].render(self.display)
+            self.helper_texts[self.helper_lines][self.helper_index].render(self.display)
 
         else:
             self.display.blit(self.dark_surf, (0, 0), special_flags=pygame.BLEND_RGBA_SUB)
