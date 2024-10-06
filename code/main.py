@@ -53,10 +53,10 @@ class MainGame:
             else:
                 self.stage_manager.play(dt)
 
-            surf = self.font.render(str(pygame.mouse.get_pos()), False, '#FFFFFF', "#000000")
-            rect = surf.get_rect(topleft=(20, 20))
-
-            self.display.blit(surf, rect)
+            # surf = self.font.render(str(pygame.mouse.get_pos()), False, '#FFFFFF', "#000000")
+            # rect = surf.get_rect(topleft=(20, 20))
+            #
+            # self.display.blit(surf, rect)
 
             pygame.display.flip()
 
